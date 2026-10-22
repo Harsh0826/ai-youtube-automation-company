@@ -1,22 +1,24 @@
+from __future__ import annotations
+
+import os
 from pathlib import Path
 
-from pydantic import BaseModel, Field
+from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
 
 
-class Settings(BaseModel):
-    app_name: str = "ai-youtube-automation-company"
-    database_url: str = "sqlite:///./company.db"
-    frontend_url: str = "http://localhost:5173"
-    allow_paid_services: bool = False
-    ollama_base_url: str = "http://localhost:11434"
-    youtube_client_id: str = ""
-    youtube_client_secret: str = ""
-    log_level: str = "INFO"
-
-    class Config:
-        extra = "ignore"
+class Settings:
+    APP_NAME = os.getenv("APP_NAME", "ai-youtube-automation-company")
+    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./company.db")
+    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    ALLOW_PAID_SERVICES = os.getenv("ALLOW_PAID_SERVICES", "false").lower() == "true"
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    YOUTUBE_CLIENT_ID = os.getenv("YOUTUBE_CLIENT_ID", "")
+    YOUTUBE_CLIENT_SECRET = os.getenv("YOUTUBE_CLIENT_SECRET", "")
+    LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+    DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 
 settings = Settings()
